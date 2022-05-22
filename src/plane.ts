@@ -18,7 +18,7 @@ export class Plane {
     this.pushing = false;
     this.model = model;
   }
-  update(time: number) {
+  update() {
     let v0 = this.v.len();
     
     let drag = this.v.clone().mul(-v0 * I * 0.3);

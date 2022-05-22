@@ -27,7 +27,7 @@ export default class Demo extends Phaser.Scene {
     cursors = this.input.keyboard.createCursorKeys();
   }
 
-  update(time: number, delta: number): void {
+  update(): void {
     if (cursors.left.isDown) {
       planes.onKey("A");
     }
@@ -41,7 +41,7 @@ export default class Demo extends Phaser.Scene {
       planes.onKey("S");
     }
 
-    planes.update(time);
+    planes.update();
     planes.draw();
     model.x = ((model.x % WIDTH) + WIDTH) % WIDTH;
     model.y = ((model.y % HEIGHT) + HEIGHT) % HEIGHT;
@@ -56,4 +56,4 @@ const config = {
   scene: Demo,
 };
 
-const game = new Phaser.Game(config);
+new Phaser.Game(config);
