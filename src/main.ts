@@ -16,12 +16,12 @@ export default class Demo extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("plane", "assets/plane2.png");
+    this.load.image("plane", "assets/plane.svg");
   }
 
   create() {
     model = this.add.image(0, 0, "plane");
-    model.setScale(0.1, 0.1);
+    // model.setScale(0.1, 0.1);
     planes = new Plane(model);
 
     cursors = this.input.keyboard.createCursorKeys();

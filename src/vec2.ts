@@ -1,3 +1,11 @@
+export function dot(lhs: Vec2, rhs: Vec2) {
+  return lhs.x * rhs.x + lhs.y + rhs.y;
+}
+
+export function cross(lhs: Vec2, rhs: Vec2) {
+  return lhs.x * rhs.y - lhs.x * rhs.y;
+}
+
 export class Vec2 {
   public x: number;
   public y: number;
@@ -34,8 +42,22 @@ export class Vec2 {
     return Math.atan2(this.y, this.x);
   }
 
+  rotate(r: number) {
+    let s = Math.sin(r);
+    let c = Math.cos(r);
+    let tx = this.x;
+    let ty = this.y;
+    this.x = c * tx - s * ty;
+    this.y = s * tx + c * ty;
+    return this;
+  }
+
   static fromArg(r: number) {
     return new Vec2(Math.cos(r), Math.sin(r));
+  }
+
+  toString() {
+    return `{ x = ${this.x}, y = ${this.y} }`;
   }
 }
 
