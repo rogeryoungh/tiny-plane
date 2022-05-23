@@ -1,14 +1,10 @@
 import "phaser";
 import { Plane } from "./plane";
-
-// let plane: Phaser.GameObjects.Image;
+import { WIDTH, HEIGHT } from "./const";
 
 let planes: Plane;
 let cursors: Phaser.Types.Input.Keyboard.CursorKeys;
 let model: Phaser.GameObjects.Image;
-
-let WIDTH = 1080;
-let HEIGHT = 720;
 
 export default class Demo extends Phaser.Scene {
   constructor() {

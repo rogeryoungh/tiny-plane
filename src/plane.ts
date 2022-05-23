@@ -1,7 +1,12 @@
 import { sum, Vec2 } from "./vec2";
+import { HEIGHT } from "./const";
 
-const I = 0.002;
+const I = 12;
 const PI = Math.PI;
+const k0 = 20;
+const k1 = 0.00012;
+const k2 = 0.0001;
+const dt = 1 / 60;
 // const M = 1;
 
 let Gravity = new Vec2(0, -I * 9.8);
@@ -16,7 +21,7 @@ export class Plane {
   model: Phaser.GameObjects.Image;
   constructor(model: Phaser.GameObjects.Image) {
     this.pos = new Vec2(120, 400);
-    this.v = new Vec2(.1, .2);
+    this.v = new Vec2(0.1, 0.2);
     this.dir = 0;
     this.pushing = 0;
     this.model = model;
@@ -26,36 +31,59 @@ export class Plane {
     // let arg = this.v.arg();
     // let vdir = Vec2.fromArg(this.dir);
 
-    let drag = this.v.clone().mul(-v0 * I * .8);
+    // let kk = k2 * (1 - cos(this.v, Vec2.fromArg(this.dir)));
 
-    let lifting = Vec2.fromArg(PI / 2 - PI / 5)
-      .mul(v0 * v0 * I * .5);
-    if (lifting.y < 0) {
-      lifting.mul(-1);
-    }
+    let drag = this.v.i().mul(-v0 * v0 * I * k2);
 
-    let F = Vec2.fromArg(-this.dir)
-      .mul(I * 40)
+    let lifting = Vec2.fromArg(this.dir)
+      .rotate(PI / 2)
+      .mul(v0 * v0 * I * k1);
+    // lifting = new Vec2(0, 0);
+    // if (lifting.y < 0) {
+    //   lifting.mul(-1);
+    // }
+
+    let F = Vec2.fromArg(this.dir)
+      .mul(I * k0)
       .mul(this.pushing);
 
     this.pushing = 0;
     cnt += 1;
-    if (cnt % 60 == 0) {
+    if (cnt % 120 == 0) {
+      console.clear();
       console.log(
         `G = ${Gravity} | F = ${F} | drag = ${drag} | lifting = ${lifting}`
       );
+      console.log(`dir = ${this.dir}`);
+      console.log(`lif_dir = ${Vec2.fromArg(-this.dir).rotate(PI / 2)}`);
     }
 
-    this.v = sum(Gravity, this.v, drag, F, lifting);
+    this.v = sum(Gravity, drag, F, lifting).mul(dt).add(this.v);
 
-    this.pos = sum(this.pos, this.v);
+    this.pos = this.v.clone().mul(dt).add(this.pos);
 
-    // this.dir -= (this.dir - this.v.arg()) * I
+    // this.dir -= (this.dir - this.v.arg()) * .00005 * v0;
   }
   draw() {
+    // if (this.pos.x < 0) {
+    //   this.pos.x = 0;
+    //   this.v.x *= -1;
+    // }
+    // if (this.pos.x > WIDTH) {
+    //   this.pos.x = WIDTH;
+    //   this.v.x *= -1;
+    // }
+    if (this.pos.y <= 10) {
+      this.pos.y = 10;
+      this.v.y *= -0.5;
+    }
+    if (this.pos.y > HEIGHT) {
+      this.pos.y = HEIGHT;
+      this.v.y *= -0.5;
+    }
     this.model.x = this.pos.x;
     this.model.y = -this.pos.y;
-    this.model.rotation = this.dir;
+    this.model.rotation = -this.dir;
   }
 
   onKey(key: string) {
@@ -68,10 +96,10 @@ export class Plane {
       this.pushing = -0.5;
     }
     if (key === "A") {
-      this.dir -= PI / 100;
+      this.dir += PI / 100;
     }
     if (key === "D") {
-      this.dir += PI / 100;
+      this.dir -= PI / 100;
     }
   }
 }

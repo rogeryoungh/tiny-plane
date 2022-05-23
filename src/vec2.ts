@@ -6,6 +6,10 @@ export function cross(lhs: Vec2, rhs: Vec2) {
   return lhs.x * rhs.y - lhs.x * rhs.y;
 }
 
+export function cos(lhs: Vec2, rhs: Vec2) {
+  return dot(lhs, rhs) / lhs.len() / rhs.len();
+}
+
 export class Vec2 {
   public x: number;
   public y: number;
@@ -58,6 +62,13 @@ export class Vec2 {
 
   toString() {
     return `{ x = ${this.x}, y = ${this.y} }`;
+  }
+
+  projection(other: Vec2) {
+    return this.mul(dot(this, other))
+  }
+  i () {
+    return Vec2.fromArg(this.arg());
   }
 }
 
