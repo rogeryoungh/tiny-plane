@@ -22,7 +22,7 @@ export class Plane {
   constructor(model: Phaser.GameObjects.Image) {
     this.pos = new Vec2(120, 400);
     this.v = new Vec2(0.1, 0.2);
-    this.dir = 0;
+    this.dir = -PI / 8;
     this.pushing = 0;
     this.model = model;
   }
