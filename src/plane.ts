@@ -1,4 +1,4 @@
-import { cross, dot, sum, Vec2 } from "./vec2";
+import { dot, sum, Vec2 } from "./vec2";
 import { HEIGHT } from "./const";
 
 const I = 12;
@@ -7,7 +7,7 @@ const k0 = 8;
 const k1 = 6e-2;
 const k2 = 1e-2;
 const dt = 1 / 60;
-const M = 1;
+// const M = 1;
 
 let Gravity = new Vec2(0, -I * 9.8);
 let cnt = 0;
@@ -71,10 +71,12 @@ export class Plane {
     if (this.pos.y <= 10) {
       this.pos.y = 10;
       this.v.y *= -0.5;
+      this.v.x *= 0.995;
     }
     if (this.pos.y > HEIGHT) {
       this.pos.y = HEIGHT;
       this.v.y *= -0.5;
+      this.v.x *= 0.995;
     }
     this.model.x = this.pos.x;
     this.model.y = -this.pos.y;
