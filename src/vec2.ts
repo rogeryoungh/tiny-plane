@@ -65,9 +65,9 @@ export class Vec2 {
   }
 
   projection(other: Vec2) {
-    return this.mul(dot(this, other))
+    return this.mul(dot(this, other));
   }
-  i () {
+  i() {
     return Vec2.fromArg(this.arg());
   }
 }
