@@ -1,9 +1,9 @@
 export function dot(lhs: Vec2, rhs: Vec2) {
-  return lhs.x * rhs.x + lhs.y + rhs.y;
+  return lhs.x * rhs.x + lhs.y * rhs.y;
 }
 
 export function cross(lhs: Vec2, rhs: Vec2) {
-  return lhs.x * rhs.y - lhs.x * rhs.y;
+  return lhs.x * rhs.y - lhs.y * rhs.x;
 }
 
 export function cos(lhs: Vec2, rhs: Vec2) {

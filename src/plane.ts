@@ -1,13 +1,13 @@
-import { sum, Vec2 } from "./vec2";
+import { cross, dot, sum, Vec2 } from "./vec2";
 import { HEIGHT } from "./const";
 
 const I = 12;
 const PI = Math.PI;
-const k0 = 20;
-const k1 = 0.00012;
-const k2 = 0.0001;
+const k0 = 8;
+const k1 = 6e-2;
+const k2 = 1e-2;
 const dt = 1 / 60;
-// const M = 1;
+const M = 1;
 
 let Gravity = new Vec2(0, -I * 9.8);
 let cnt = 0;
@@ -27,21 +27,15 @@ export class Plane {
     this.model = model;
   }
   update() {
-    let v0 = this.v.len();
-    // let arg = this.v.arg();
-    // let vdir = Vec2.fromArg(this.dir);
+    let u = Vec2.fromArg(this.dir);
+    let u2 = u.clone().rotate(-PI / 2);
 
-    // let kk = k2 * (1 - cos(this.v, Vec2.fromArg(this.dir)));
+    let du1 = dot(this.v, u);
+    let drag = u.clone().mul(-du1 * Math.abs(du1) * k2);
+    drag.mul(0);
 
-    let drag = this.v.i().mul(-v0 * v0 * I * k2);
-
-    let lifting = Vec2.fromArg(this.dir)
-      .rotate(PI / 2)
-      .mul(v0 * v0 * I * k1);
-    // lifting = new Vec2(0, 0);
-    // if (lifting.y < 0) {
-    //   lifting.mul(-1);
-    // }
+    let du2 = dot(this.v, u2);
+    let lifting = u2.clone().mul(-du2 * Math.abs(du2) * k1);
 
     let F = Vec2.fromArg(this.dir)
       .mul(I * k0)
@@ -55,14 +49,15 @@ export class Plane {
         `G = ${Gravity} | F = ${F} | drag = ${drag} | lifting = ${lifting}`
       );
       console.log(`dir = ${this.dir}`);
+      console.log(`v = ${this.v}`);
+      console.log(`u = ${u} | u2 = ${u2}`);
+      console.log(`du = ${du1} | du2 = ${du2}`);
       console.log(`lif_dir = ${Vec2.fromArg(-this.dir).rotate(PI / 2)}`);
     }
 
     this.v = sum(Gravity, drag, F, lifting).mul(dt).add(this.v);
 
     this.pos = this.v.clone().mul(dt).add(this.pos);
-
-    // this.dir -= (this.dir - this.v.arg()) * .00005 * v0;
   }
   draw() {
     // if (this.pos.x < 0) {
