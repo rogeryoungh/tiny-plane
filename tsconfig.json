@@ -17,5 +17,5 @@
     "skipLibCheck": true
   },
   "include": ["src", "assets"],
-  // "exclude": ["**.glsl.js"]
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
