@@ -2,4 +2,4 @@
 
 一个简单的小飞机，键盘控制。
 
-DEMO: https://tiny-plane.netlify.app/
+DEMO: https://tiny-plane.rogery.dev/
